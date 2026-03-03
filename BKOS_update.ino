@@ -130,14 +130,21 @@ void run_update() {
       tft.println(BKOS_VERSIE_GIT);
       downloadAndApplyFirmware(4);
     } else if (druk == 1) {
+      // Installeren BKOS 5a
+      updaten = true;
+      delay(250);
       tft.fillScreen(kleur_zwart);
-      tft.setCursor(0, 100);
+      bkos_logo(10, 10, kleur_donker);
+      tft.setCursor(300, 10);
       tft.setTextSize(3);
-      tft.print("    BKOS 5 is nog niet uit");
-      tft.print("    U keert terug naar het startscherm");
-      delay(3000);
-      actieve_app = 2;
-      scherm_bouwen = true;
+      tft.setTextColor(kleur_groen);
+      tft.println("BKOS update");
+      tft.setTextColor(kleur_beige);
+      tft.setCursor(300, 45);
+      tft.print(BKOS_VERSIE);
+      tft.print(" > ");
+      tft.println(BKOS_VERSIE_GIT);
+      downloadAndApplyFirmware(5);
     }
 
     if (ts_y >= home_knop[1]) {

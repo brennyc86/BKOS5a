@@ -33,11 +33,9 @@ unsigned int klok_getekend = 0;
   const char* firmwareFile = "/esp32.esp32.esp32s3/BKOS4.ino.bin";
   const char* versionUrl = "https://raw.githubusercontent.com/BrendanKoster86/BKOS4/main/firmware/versie5.txt";
   const char* aversionUrl = "https://raw.githubusercontent.com/BrendanKoster86/BKOS4/main/firmware/alowed5.txt";
-  const char* firmware5Url = "https://raw.githubusercontent.com/brennyc86/BKOS5a/main/build/esp32.esp32.esp32s3/BKOS4.ino.bin";
+  const char* firmware5Url = "https://raw.githubusercontent.com/brennyc86/BKOS5a/main/build/esp32.esp32.esp32s3/BKOS5a.ino.bin";
   const char* version5Url = "https://raw.githubusercontent.com/brennyc86/BKOS5a/main/firmware/versie5.txt";
   const char* aversion5Url = "https://raw.githubusercontent.com/brennyc86/BKOS5a/main/firmware/alowed5.txt";
   
 #else
-  const char* firmwareUrl = "https://github.com/BrendanKoster86/BKOS4/blob/main/firmware/firmware.ino.bin";
-  const char* versionUrl = "https://raw.githubusercontent.com/BrendanKoster86/BKOS4/main/firmware/versie.txt";
 #endif
