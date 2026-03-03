@@ -115,6 +115,9 @@ void ioLoop(){
     delay(50);
     io();
   }
+  #ifdef ESP32
+  io_state_check(); // BKOS5a: NVS delayed write
+  #endif
 }
 
 void guiLoop(){
@@ -123,22 +126,43 @@ void guiLoop(){
     if (scherm_actief) {
       ts_begin();
       if (ts_touched()) {
-        scherm_touched = millis();
-        actieve_touch = true;
-        ts_x = touch_x();
-        ts_y = touch_y();
+        // BKOS5a: Touch debounce - voorkom dubbele registraties
+        unsigned long nu = millis();
+        if (nu - laatste_touch_tijd >= TOUCH_DEBOUNCE_MS) {
+          laatste_touch_tijd = nu;
+          scherm_touched = nu;
+          actieve_touch = true;
+          ts_x = touch_x();
+          ts_y = touch_y();
+        } else {
+          actieve_touch = false;
+        }
         // fillCircle(ts_x, ts_y, 10, kleur_wit);
       } else {
         actieve_touch = false;
       }
 
-      if ((millis() > scherm_touched + scherm_timer*1000) || (millis() < scherm_touched)) {
+      unsigned long verstreken = millis() - scherm_touched;
+      unsigned long timeout_ms = (unsigned long)scherm_timer * 1000UL;
+      if ((millis() > scherm_touched + timeout_ms) || (millis() < scherm_touched)) {
         scherm_actief = false;
+        scherm_waarschuwing_actief = false;
         digitalWrite(TFT_BL, LOW);
       } else {
+        // BKOS5a: Schermtimer waarschuwing - rode rand 10s voor timeout
+        if (timeout_ms > 10000UL && verstreken >= timeout_ms - 10000UL) {
+          if (!scherm_waarschuwing_actief) {
+            scherm_waarschuwing_actief = true;
+            scherm_timeout_waarschuwing();
+          }
+        } else {
+          if (scherm_waarschuwing_actief) {
+            scherm_waarschuwing_actief = false;
+            scherm_bouwen = true;  // hertekenenen
+          }
+        }
         app_uitvoeren();
         if (millis() > klok_getekend + 5000) {
-          // klok_update();
           header_plaatsen();
         }
       }

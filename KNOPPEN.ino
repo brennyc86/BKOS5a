@@ -1,3 +1,19 @@
+// BKOS5a: Visuele touch feedback - korte kleurflits bij aanraking
+void knop_feedback(int knop_nummer) {
+  if (knop_nummer < 0 || knop_nummer >= aantal_knoppen) return;
+  // Teken knop tijdelijk lichter
+  uint16_t feedback_kleur = tft.color565(235, 235, 100); // beige flits
+  fillRoundRect(
+    knoppen_teken_positie[knop_nummer][0],
+    knoppen_teken_positie[knop_nummer][1],
+    knoppen_teken_positie[knop_nummer][2],
+    knoppen_teken_positie[knop_nummer][3],
+    5, feedback_kleur);
+  delay(60);
+  // Herstel naar normale staat
+  knop_plaatsen(knop_nummer, true);
+}
+
 void knop_plaatsen(int knop_nummer) {
   knop_plaatsen(knop_nummer, false);
 }

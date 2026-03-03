@@ -24,3 +24,4 @@ void homeknop_plaatsen(bool invert);
 void alle_knoppen_plaatsen();
 void alle_knoppen_plaatsen(bool tekst2);
 int klik(int x, int y);
+void knop_feedback(int knop_nummer); // BKOS5a: visuele touch feedback

@@ -9,7 +9,12 @@
 #include "apps.h"
 #include "info.h"
 
-#define BKOS_VERSIE "4.T260226"
+#define BKOS_VERSIE "5a.T260303"
+
+// BKOS5a: QR-code configuratie
+#define QR_TONEN true           // true = toon QR op homescreen en bootscherm
+#define QR_URL "https://youtube.com/@brendanintech"  // aanpasbaar
+
 String BKOSS;
 String BKOSSV;
 

@@ -1,3 +1,12 @@
+
+// BKOS5a: Rode rand waarschuwing 10s voor scherm-timeout
+void scherm_timeout_waarschuwing() {
+  // Teken rode rand rondom het scherm als waarschuwing
+  int dikte = 4;
+  for (int i = 0; i < dikte; i++) {
+    tft.drawRect(i, i, tft.width() - 2*i, tft.height() - 2*i, tft.color565(200, 0, 0));
+  }
+}
 long uit_check = 0;
 
 void beeld_melding(String hoofdmelding) {

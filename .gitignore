@@ -1,1 +1,6 @@
-info.h
+build/
+*.elf
+*.map
+*.o
+*.a
+.DS_Store

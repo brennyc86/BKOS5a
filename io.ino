@@ -495,6 +495,9 @@ int io_output_status(byte output) {
 void io_set_defaults(){
   // io_set_defaults(2);
   io_set_defaults(EEPROM.read(16));
+  #ifdef ESP32
+  io_state_laden(); // BKOS5a: herstel laatste IO-staat uit NVS
+  #endif
   
 }
 
@@ -1181,3 +1184,33 @@ void io_set_6(){
   io_namen[7] = "**TB_blau";
 
 }
+#ifdef ESP32
+// BKOS5a: NVS IO state persistentie
+Preferences _io_prefs;
+bool io_state_dirty = false;
+unsigned long io_state_last_write = 0;
+
+void io_state_opslaan() {
+  if (!io_state_dirty) return;
+  _io_prefs.begin("io_state", false);
+  _io_prefs.putBytes("out", io_output, io_cnt * sizeof(byte));
+  _io_prefs.end();
+  io_state_dirty = false;
+  io_state_last_write = millis();
+}
+
+void io_state_laden() {
+  _io_prefs.begin("io_state", true);
+  size_t opgeslagen = _io_prefs.getBytesLength("out");
+  if (opgeslagen == io_cnt * sizeof(byte)) {
+    _io_prefs.getBytes("out", io_output, io_cnt * sizeof(byte));
+  }
+  _io_prefs.end();
+}
+
+void io_state_check() {
+  if (io_state_dirty && (millis() - io_state_last_write >= IO_WRITE_DELAY_MS)) {
+    io_state_opslaan();
+  }
+}
+#endif

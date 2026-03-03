@@ -96,6 +96,7 @@ void run_schakelscherm() {
   if (actieve_touch) {
       
     druk = klik(ts_x, ts_y);
+    if (druk >= 0) { knop_feedback(druk); } // BKOS5a: visuele touch feedback
 
     if (druk > -1){
       io_schakel(druk);

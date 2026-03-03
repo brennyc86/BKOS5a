@@ -74,3 +74,5 @@ void fillCircle(int x, int y, int r, uint16_t kleur);
 void fillCircle(int x, int y, int r, uint16_t kleur, uint16_t schaal);
 void drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t kleur);
 void drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t kleur, uint16_t schaal);
+
+void scherm_timeout_waarschuwing(); // BKOS5a

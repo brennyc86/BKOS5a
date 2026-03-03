@@ -77,3 +77,15 @@ String io_handleiding[6];
 // *io_alert    = {0, 0, 0, 0, 0, 0, 0, 0,
 //                0, 0, 0, 0, 0, 0, 0, 0,
 //                0, 0, 0, 0, 0, 0, 0, 0};
+
+// BKOS5a: NVS state persistentie
+#ifdef ESP32
+#include <Preferences.h>
+#define IO_WRITE_DELAY_MS 30000UL
+extern bool io_state_dirty;
+extern unsigned long io_state_last_write;
+void io_state_opslaan();
+void io_state_laden();
+void io_state_check();
+#endif
+// Pico: gebruik LittleFS + JSON als alternatief
