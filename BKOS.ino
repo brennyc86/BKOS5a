@@ -23,13 +23,13 @@ void BKOS_boot(){
   tft.setTextColor(tft.color565(0, 0, 0));
   tft.setTextColor(tft.color565(255, 255, 255));
   // BKOS5a: QR-code configureerbaar via QR_TONEN in BKOS.h
-  #if QR_TONEN
+//   #if QR_TONEN  // [BKOS5a disabled]
   if (ORIENTATIE == 1) {
-    qr_bytes(137, 220, qr_brendanintechYT, 3, kleur_donker, kleur_licht);
+//     qr_bytes(137, 220, qr_brendanintechYT, 3, kleur_donker, kleur_licht);  // [BKOS5a disabled]
   } else if (ORIENTATIE == 0) {
-    qr_bytes(150, 10, qr_brendanintechYT, scherm_x(3), kleur_donker, kleur_licht);
+//     qr_bytes(150, 10, qr_brendanintechYT, scherm_x(3), kleur_donker, kleur_licht);  // [BKOS5a disabled]
   }
-  #endif
+  // #endif  // [BKOS5a: QR_TONEN block end]
 
   tft.setTextColor(tft.color565(0, 0, 110));
   char c = ' ';

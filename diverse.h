@@ -7,10 +7,10 @@ bool scherm_waarschuwing_actief = false;
 // BKOS5a: Laatste touch tijdstip voor debounce
 unsigned long laatste_touch_tijd = 0;
 
-#include "div_ellipse.h"
+// [BKOS5a] REMOVED: #include "div_ellipse.h"
 #include "div_icon.h"
 #include "div_teken.h"
 #include "div_schermacties.h"
 #include "div_tijd.h"
 #include "div_status.h"
-#include "div_QR.h"
+// [BKOS5a] REMOVED: #include "div_QR.h"

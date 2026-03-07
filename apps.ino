@@ -24,13 +24,13 @@ void app_uitvoeren() {
       } else if (homeknop_actief) {
         if (ts_y >= home_knop[1]) {
           actieve_app = 0;
-          actief_spel = 0;
+          // actief_spel = 0;  // [BKOS5a removed]
           scherm_bouwen = true;
         }
       } else if (homeknop_half_actief) {
         if ((ts_y >= home_knop[1]) & (ts_x <= (SX_MAX / 2))) {
           actieve_app = 0;
-          actief_spel = 0;
+          // actief_spel = 0;  // [BKOS5a removed]
           scherm_bouwen = true;
         }
       }
@@ -61,7 +61,7 @@ void app_uitvoeren() {
         if ((!homeknop_actief) && (!homeknop_half_actief) && (lang)) {
           if (beeld_vraag("Naar homescherm?", "", "Ja", "Nee") == 0) {
             actieve_app = 0;
-            actief_spel = 0;
+            // actief_spel = 0;  // [BKOS5a removed]
             scherm_bouwen = true;
           } else {
             scherm_bouwen = true;

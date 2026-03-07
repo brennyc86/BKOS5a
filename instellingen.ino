@@ -14,14 +14,10 @@ void instellingen(String actie) {
     } 
   } else {
     if (actie == "bouw") {
-      if (actief_spel == 0) {
-        homeknop_actief = true;
-        homeknop_half_actief = false;
-        slepen_toestaan = false;
-      } else {
-        homeknop_actief = true;
-        homeknop_half_actief = false;
-      }
+      // [BKOS5a] spellen verwijderd - directe toewijzing
+      homeknop_actief = true;
+      homeknop_half_actief = false;
+      slepen_toestaan = false;
     }
     instellingen_bibliotheek[actief_instelling](actie);
   }

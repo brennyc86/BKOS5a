@@ -47,7 +47,7 @@ void bouw_thuisscherm() {
   fillRect(0, header_vlak[3], 240, 360-header_vlak[3], kleur_donker);
   homeknop_actief = false;
   
-  qr_bytes(169, 249, qr_brendanintechYT, 2, kleur_zwart, kleur_wit);
+//   qr_bytes(169, 249, qr_brendanintechYT, 2, kleur_zwart, kleur_wit);  // [BKOS5a disabled]
 
   alle_homescherm_knoppen_plaatsen();
 
