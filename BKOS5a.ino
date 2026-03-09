@@ -109,11 +109,19 @@ void wifiLoop() {
 
 
 void ioLoop(){
-  if (io_now || (io_gecheckt + (io_timer)) < millis()) {
+  // BKOS5a: io_now = directe actie (bijv. na schakelaar), altijd uitvoeren
+  // Periodieke check op basis van io_timer (standaard 30s)
+  if (io_now) {
     io_now = false;
     io();
     delay(50);
     io();
+    io_gecheckt = millis();  // reset timer na directe actie
+  } else if ((io_gecheckt + io_timer) < millis()) {
+    io();
+    delay(50);
+    io();
+    io_gecheckt = millis();
   }
   #ifdef ESP32
   io_state_check(); // BKOS5a: NVS delayed write
@@ -150,7 +158,7 @@ void guiLoop(){
         digitalWrite(TFT_BL, LOW);
       } else {
         // BKOS5a: Schermtimer waarschuwing - rode rand 10s voor timeout
-        if (timeout_ms > 10000UL && verstreken >= timeout_ms - 10000UL) {
+        if (timeout_ms > 5000UL && verstreken >= timeout_ms - 5000UL) {  // BKOS5a: waarschuwing 5s voor timeout
           if (!scherm_waarschuwing_actief) {
             scherm_waarschuwing_actief = true;
             scherm_timeout_waarschuwing();
@@ -182,6 +190,11 @@ void guiLoop(){
         ts_begin();
         scherm_touched = millis();
         actieve_touch = false;
+        // BKOS5a: rode rand verbergen bij wake-up
+        if (scherm_waarschuwing_actief) {
+          scherm_waarschuwing_actief = false;
+          scherm_bouwen = true;
+        }
       }
     }
   }

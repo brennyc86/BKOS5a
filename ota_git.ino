@@ -122,6 +122,20 @@ String fetchLatestVersion() {
   }
 }
 
+String fetchVersion5() {
+  HTTPClient http;
+  http.begin(version5Url);
+  int httpCode = http.GET();
+  if (httpCode == HTTP_CODE_OK) {
+    String v = http.getString();
+    v.trim();
+    http.end();
+    return v;
+  }
+  http.end();
+  return "";
+}
+
 void downloadAndApplyFirmware() {
   if (strncmp(BKOS_VERSIE, "4", 1) == 0) {
     downloadAndApplyFirmware(4);
@@ -135,12 +149,10 @@ void downloadAndApplyFirmware() {
 void downloadAndApplyFirmware(byte BKOS) {
   HTTPClient http;
   http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
-  if (BKOS == 4) {
-    http.begin(firmwareUrl);
-  } if (BKOS == 5) {
+  if (BKOS == 5) {
     http.begin(firmware5Url);
   } else {
-    http.begin(firmwareUrl);
+    http.begin(firmwareUrl);  // BKOS 4 of standaard
   }
 
   int httpCode = http.GET();

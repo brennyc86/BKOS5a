@@ -35,6 +35,7 @@ void bouw_update() {
   knoppen_status = new byte[aantal_knoppen];
 
   BKOS_GIT_ALLOWED = fetchAlowedVersions();
+  BKOS5_VERSIE_GIT = fetchVersion5();  // BKOS5a versie ophalen
   String deler = "\n";
   String sonderdeel;
   char conderdeel[10];
@@ -143,7 +144,7 @@ void run_update() {
       tft.setCursor(300, 45);
       tft.print(BKOS_VERSIE);
       tft.print(" > ");
-      tft.println(BKOS_VERSIE_GIT);
+      tft.println(BKOS5_VERSIE_GIT.length() > 0 ? BKOS5_VERSIE_GIT : "5a");
       downloadAndApplyFirmware(5);
     }
 

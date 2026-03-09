@@ -23,7 +23,12 @@ int io_diepcheck_cnt = 0;
 int* io_diepcheck_pins;
 int io_diepcheck_pins_cnt = 0;
 bool io_diepcheck = true;
-long io_timer = 5000;  // Aantal miliseconde tussen de checks (0 = niet checken)
+// BKOS5a: IO polling interval - instelbaar (milliseconden)
+// Bij wijziging wordt io_now=true gezet voor directe uitvoering
+#ifndef IO_INTERVAL_MS
+  #define IO_INTERVAL_MS 30000UL  // Standaard: 30 seconden
+#endif
+long io_timer = IO_INTERVAL_MS;  // Aantal milliseconden tussen de checks (0 = niet checken)
 long io_gecheckt;   // Moment waarop de laatste check heeft plaatsgevonden.
 bool io_wijziging = false;  // Of er een wijziging heeft plaatsgevonden
 bool io_actief = false;
