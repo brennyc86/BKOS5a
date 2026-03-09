@@ -103,7 +103,15 @@ void knop_plaatsen(int knop_nummer, bool tekst, uint16_t basis_kleur) {
         drawIcon((knoppen_teken_positie[knop_nummer][0]+knoppen_teken_positie[knop_nummer][2]/2) - 15, knoppen_teken_positie[knop_nummer][1]+5, 30, kleur_zwart, icon_30_M_motor, sizeof(icon_30_M_motor)/sizeof(byte));
       }
       
+    } else if (charstrip(knoppen_tekst[knop_nummer]) == "**E_dek"){
+      // Deklicht - spotlight in de mast die het voordek verlicht
+      if (knoppen_status[knop_nummer] == 1){
+        drawIcon((knoppen_teken_positie[knop_nummer][0]+knoppen_teken_positie[knop_nummer][2]/2) - 15, knoppen_teken_positie[knop_nummer][1]+5, 30, kleur_wit, icon_30_dek, sizeof(icon_30_dek)/sizeof(byte));
+      } else {
+        drawIcon((knoppen_teken_positie[knop_nummer][0]+knoppen_teken_positie[knop_nummer][2]/2) - 15, knoppen_teken_positie[knop_nummer][1]+5, 30, kleur_zwart, icon_30_dek, sizeof(icon_30_dek)/sizeof(byte));
+      }
     } else if (charstrip(knoppen_tekst[knop_nummer]) == "**haven"){
+
       // Anker
       if (knoppen_status[knop_nummer] == 1){
         drawIcon((knoppen_teken_positie[knop_nummer][0]+knoppen_teken_positie[knop_nummer][2]/2) - 15, knoppen_teken_positie[knop_nummer][1]+5, 30, kleur_geel, icon_30_M_zon, sizeof(icon_30_M_zon)/sizeof(byte));  

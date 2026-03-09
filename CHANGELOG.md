@@ -70,3 +70,8 @@ Alle wijzigingen zijn backwards-compatible en houden de multi-board HAL intact.
 - Fix: io_now volatile voor correcte cross-core zichtbaarheid (freeRTOS dual core)
 - Fix: IO timer reset na directe schakelactie verwijderd - periodieke timer loopt nu onafhankelijk
 - Verbeter: Meerdere schakelacties snel achter elkaar worden nu altijd direct doorgegeven
+
+## v5a.T260309c - 2026-03-09
+- Nieuw icon: **E_dek (deklicht - spotlight in de mast voor voordek)
+  - Status 0 (uit): zwart
+  - Status 1 (aan): wit
