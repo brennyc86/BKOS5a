@@ -30,7 +30,7 @@ const unsigned long ota_wifi_interval = 3  * 1000;  // 5 seconde in milliseconds
 unsigned long ota_wifi_check = 0;
 
 int SCRIPT_RESOLUTIE = 2432;
-bool io_now = false;
+volatile bool io_now = false;  // BKOS5a: volatile voor cross-core zichtbaarheid
 bool updaten = false;
 
 #include "hardware.h"
@@ -116,7 +116,9 @@ void ioLoop(){
     io();
     delay(50);
     io();
-    io_gecheckt = millis();  // reset timer na directe actie
+    // BKOS5a fix: io_gecheckt NIET resetten na directe actie
+    // Periodieke timer loopt onafhankelijk door
+    // Meerdere schakelacties snel achter elkaar: altijd direct uitgevoerd via io_now
   } else if ((io_gecheckt + io_timer) < millis()) {
     io();
     delay(50);
@@ -190,11 +192,9 @@ void guiLoop(){
         ts_begin();
         scherm_touched = millis();
         actieve_touch = false;
-        // BKOS5a: rode rand verbergen bij wake-up
-        if (scherm_waarschuwing_actief) {
-          scherm_waarschuwing_actief = false;
-          scherm_bouwen = true;
-        }
+        // BKOS5a: altijd hertekenen na wake-up (rode rand weg + scherm fris)
+        scherm_waarschuwing_actief = false;
+        scherm_bouwen = true;  // altijd hertekenen na wake-up
       }
     }
   }

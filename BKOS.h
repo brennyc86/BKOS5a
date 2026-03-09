@@ -9,7 +9,7 @@
 #include "apps.h"
 #include "info.h"
 
-#define BKOS_VERSIE "5a.T260309"
+#define BKOS_VERSIE "5a.T260309b"
 
 // BKOS5a: QR-code configuratie
 #define QR_TONEN true           // true = toon QR op homescreen en bootscherm

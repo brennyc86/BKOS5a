@@ -64,3 +64,9 @@ Alle wijzigingen zijn backwards-compatible en houden de multi-board HAL intact.
 - Magic numbers vervangen door defines
 - String-actie dispatch naar enum migreren
 - Spelletjes vervangen (Zeeslag, Dammen, Schaken)
+
+## v5a.T260309b — Bugfixes
+- Fix: Rode rand verdwijnt nu correct na scherm timeout + wake-up (scherm_bouwen altijd true bij wake-up)
+- Fix: io_now volatile voor correcte cross-core zichtbaarheid (freeRTOS dual core)
+- Fix: IO timer reset na directe schakelactie verwijderd - periodieke timer loopt nu onafhankelijk
+- Verbeter: Meerdere schakelacties snel achter elkaar worden nu altijd direct doorgegeven
