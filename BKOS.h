@@ -7,7 +7,6 @@
 #include "BKOS_header.h"
 #include "instellingen.h"
 #include "apps.h"
-#include "info.h"
 
 #define BKOS_VERSIE "5a.T260309c"
 
