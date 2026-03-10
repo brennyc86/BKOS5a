@@ -45,7 +45,7 @@
       8 /* B0 */, 3 /* B1 */, 46 /* B2 */, 9 /* B3 */, 1 /* B4 */,
       0 /* hsync_polarity */, 8 /* hsync_front_porch */, 4 /* hsync_pulse_width */, 8 /* hsync_back_porch */,
       0 /* vsync_polarity */, 8 /* vsync_front_porch */, 4 /* vsync_pulse_width */, 8 /* vsync_back_porch */,
-      1 /* pclk_active_neg */, 16000000 /* prefer_speed */);
+      1 /* pclk_active_neg */, 14000000 /* prefer_speed */);
   Arduino_RGB_Display tft = Arduino_RGB_Display(
       800 /* width */, 480 /* height */, rgbpanel, 0 /* rotation */, true /* auto_flush */);
 
@@ -62,7 +62,7 @@
       15 /* B0 */, 7 /* B1 */, 6 /* B2 */, 5 /* B3 */, 4 /* B4 */,
       0 /* hsync_polarity */, 210 /* hsync_front_porch */, 30 /* hsync_pulse_width */, 16 /* hsync_back_porch */,
       0 /* vsync_polarity */, 22 /* vsync_front_porch */, 13 /* vsync_pulse_width */, 10 /* vsync_back_porch */,
-      1 /* pclk_active_neg */, 16000000 /* prefer_speed */);
+      1 /* pclk_active_neg */, 14000000 /* prefer_speed */);
   Arduino_RGB_Display tft = Arduino_RGB_Display(
       800 /* width */, 480 /* height */, rgbpanel, 0 /* rotation */, true /* auto_flush */);
 
