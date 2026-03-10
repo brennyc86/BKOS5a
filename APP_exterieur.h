@@ -1,5 +1,5 @@
 void exterieur(String actie);
-void exterieur_teken_boot(int32_t x, int32_t y, uint32_t kleur);
+void exterieur_teken_boot(int32_t x, int32_t y);
 
 byte exterieur_knoppen_cnt = 9;
 
