@@ -169,51 +169,63 @@ void bouw_exterieur() {
 }
 
 void exterieur_teken_boot(int32_t x, int32_t y) {
+  // Kleuren
   uint16_t kl_romp   = tft.color565(30,  80,  40);   // donkergroen romp
-  uint16_t kl_opbouw = tft.color565(235, 235, 235);  // wit opbouw/kajuit
-  uint16_t kl_zeil   = tft.color565(155, 60,  35);   // roodbruin zeilen
-  uint16_t kl_mast   = tft.color565(185, 185, 185);  // aluminium grijs mast/stagen
+  uint16_t kl_opbouw = tft.color565(235, 235, 235);  // wit opbouw
+  uint16_t kl_zeil   = tft.color565(255, 255, 255);  // wit zeilen
+  uint16_t kl_mast   = tft.color565(185, 185, 185);  // grijs mast/verst./giek
   uint16_t kl_ramen  = tft.color565(140, 195, 235);  // lichtblauw ramen
 
-  // ZEILEN (roodbruin) - eerst tekenen (achterste laag)
+  // TEKEN ORDE: onder- naar bovenlaag (vlakken vullen waar mogelijk)
+
+  // ZEILEN wit - lijnen tekenen (geen vulling, zeilen zijn doorschijnend)
   static int boot_zeilen[][2] = {
-    {20, 118}, {20, 118}, {65, 4}, {65, 4},                              // grootzeil
-    {117, 137}, {117, 137}, {89, 137}, {89, 137},                        // genua deel 1
-    {52, 129}, {52, 129}, {53, 120}, {53, 120}                           // genua deel 2
+    {20, 118}, {20, 118}, {65, 4}, {65, 4},  // grootzeil rand
+    {117, 137}, {117, 137}, {89, 137}, {89, 137},  // genua deel 1
+    {52, 129}, {52, 129}, {53, 120}, {53, 120}  // genua deel 2
   };
   tekenItem(x, y, kl_zeil, boot_zeilen, sizeof(boot_zeilen)/sizeof(int)/2);
 
-  // MAST EN STAGEN (grijs)
+  // ROMP donkergroen - lijnen + scanline vulling
+  static int boot_romp[][2] = {
+    {0, 150}, {0, 150}, {2, 165}, {100, 165}, {120, 140}, {120, 140},  // onderrand
+    {70, 150}, {70, 150}, {105, 147}, {105, 147},  // westerly knikje
+    {40, 140}, {40, 140}, {49, 137}, {49, 146}, {49, 146},  // kuiprand bovenzijde
+    {25, 143}, {25, 143}, {25, 148}, {25, 148}  // kuiprand onderzijde
+  };
+  tekenItem(x, y, kl_romp, boot_romp, sizeof(boot_romp)/sizeof(int)/2);
+  // Romp vulling met scanlines (geen horizontale balken)
+  for (int ry = 151; ry < 165; ry++) {
+    tft.drawLine(scherm_x(x + 2), scherm_y(y + ry), scherm_x(x + 100), scherm_y(y + ry), kl_romp);
+  }
+  tekenCircels(x, y, kl_romp, circels_boot, sizeof(circels_boot)/sizeof(int)/3);
+
+  // MAST/VERSTAGING/GIEK grijs - lijnen
   static int boot_mast[][2] = {
-    {0, 150}, {0, 150}, {63, 0}, {71, 0}, {120, 141}, {120, 141},        // verstaging
-    {20, 120}, {20, 120}, {65, 120}, {65, 119}, {20, 119}, {20, 118}, {65, 118}, {65, 118}, // giek
-    {69, 133}, {69, 133}, {69, 0}, {68, 0}, {68, 133}, {67, 133},
-    {67, 0}, {66, 0}, {66, 133}, {65, 133}, {65, 0}, {65, 0}            // mast (5 lijnen)
+    {0, 150}, {0, 150}, {63, 0}, {71, 0}, {120, 141}, {120, 141},  // verstaging
+    {20, 120}, {20, 120}, {65, 120}, {65, 119}, {20, 119}, {20, 118}, {65, 118}, {65, 118},  // giek
+    {69, 133}, {69, 133}, {69, 0}, {68, 0}, {68, 133}, {67, 133}, {67, 0}, {66, 0}, {66, 133},  // mast lijnen 1-2
+    {65, 133}, {65, 0}, {65, 0}  // mast lijn 3
   };
   tekenItem(x, y, kl_mast, boot_mast, sizeof(boot_mast)/sizeof(int)/2);
 
-  // ROMP (donkergroen)
-  static int boot_romp[][2] = {
-    {0, 150}, {0, 150}, {2, 165}, {100, 165}, {120, 140}, {120, 140},    // romp onderrand
-    {70, 150}, {70, 150}, {105, 147}, {105, 147},                        // Westerly knikje
-    {40, 140}, {40, 140}, {49, 137}, {49, 146}, {49, 146},
-    {25, 143}, {25, 143}, {25, 148}, {25, 148}                           // kuiprand
-  };
-  tekenItem(x, y, kl_romp, boot_romp, sizeof(boot_romp)/sizeof(int)/2);
-  tekenCircels(x, y, kl_romp, circels_boot, sizeof(circels_boot)/sizeof(int)/3);
-
-  // OPBOUW (wit)
+  // OPBOUW wit - lijnen + scanline vulling
   static int boot_opbouw[][2] = {
-    {0, 150}, {2, 146}, {40, 140}, {40, 125}, {49, 125}, {54, 133},
-    {70, 133}, {72, 135}, {85, 135}, {92, 142}, {92, 142},               // opbouw contour
-    {54, 133}, {54, 133}, {44, 133}, {44, 137}, {44, 137}                // kajuit deur/buiskap
+    {0, 150}, {2, 146}, {40, 140}, {40, 125}, {49, 125}, {54, 133}, {70, 133}, {72, 135}, {85, 135}, {92, 142}, {92, 142},  // opbouw contour
+    {54, 133}, {54, 133}, {44, 133}, {44, 137}, {44, 137}  // kajuit deur
   };
   tekenItem(x, y, kl_opbouw, boot_opbouw, sizeof(boot_opbouw)/sizeof(int)/2);
+  // Opbouw vulling met scanlines (rompvorm volgen)
+  for (int oy = 126; oy < 140; oy++) {
+    int lx = oy - 126 + 2;  // volg romp curve
+    int rx = 40 - (oy - 126)/3;
+    tft.drawLine(scherm_x(x + lx), scherm_y(y + oy), scherm_x(x + rx), scherm_y(y + oy), kl_opbouw);
+  }
 
-  // RAMEN (lichtblauw)
+  // RAMEN lichtblauw - lijnen
   static int boot_ramen[][2] = {
-    {51, 142}, {51, 142}, {58, 142}, {58, 135}, {53, 135}, {51, 142}, {51, 142}, // raam 1
-    {61, 142}, {61, 142}, {69, 142}, {67, 135}, {61, 135}, {61, 142}, {61, 142}, // raam 2
+    {51, 142}, {51, 142}, {58, 142}, {58, 135}, {53, 135}, {51, 142}, {51, 142},  // raam 1
+    {61, 142}, {61, 142}, {69, 142}, {67, 135}, {61, 135}, {61, 142}, {61, 142},  // raam 2
     {42, 131}, {42, 131}, {51, 131}, {47, 127}, {42, 127}, {42, 131}, {42, 131}  // raam 3
   };
   tekenItem(x, y, kl_ramen, boot_ramen, sizeof(boot_ramen)/sizeof(int)/2);

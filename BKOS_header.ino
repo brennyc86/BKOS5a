@@ -4,26 +4,21 @@ void header_plaatsen(String headertitel) {
 }
 
 void header_plaatsen() {
+  // Direct de header balk vullen met de gewenste kleur
   fillRect(header_vlak[0], header_vlak[1], header_vlak[2], header_vlak[3], kleur_header_balk);
   int icon_tekst_grootte = scherm_x(1);
   if (RESOLUTIE == 4880) {
     icon_tekst_grootte = 2;
   }
-  // Titel links uitgelijnd, na alert/bell ruimte (30px)
+  // Titel links uitgelijnd (na alert ruimte ~25-30px)
   tft.setTextColor(kleur_header_tekst);
-  if (RESOLUTIE == 2432) {
-    tft.setTextSize(1);
-    setCursor(30, 8);
-  } else if (RESOLUTIE == 3248) {
-    tft.setTextSize(2);
-    setCursor(30, 7);
-  } else if (RESOLUTIE == 4880) {
-    tft.setTextSize(2);
-    setCursor(30, 7);
-  }
+  tft.setTextSize(icon_tekst_grootte);
+  setCursor(30, 7);
   tft.print(header_titel);
+
+  // Direct klok en iconen tekenen (geen delay)
   klok_update(true);
-  header_alert();
+  header_alert(icon_tekst_grootte);
 }
 
 void klok_update() {
@@ -34,6 +29,7 @@ void klok_update(bool force) {
   String huidige_tijd = tijd();
   if ((laatste_tijd != huidige_tijd) || (force)) {
     laatste_tijd = huidige_tijd;
+    // Klok achtergrond vullen met header kleur
     fillRect(160, 0, 45, header_vlak[3], kleur_header_balk);
     setCursor(190, 7);
 
@@ -151,7 +147,7 @@ void header_alert(int icon_tekst_grootte) {
   } else if (io_diepcheck_pins_cnt == 0) {
     drawIcon10x10(5, 5, icon_bel, tft.color565(255, 0, 255), icon_tekst_grootte);
   } else {
-    fillRect(header_vlak[0], header_vlak[1], 20, header_vlak[3], kleur_zwart);
+    fillRect(header_vlak[0], header_vlak[1], 20, header_vlak[3], kleur_header_balk);
   }
 }
 
