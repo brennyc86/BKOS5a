@@ -208,11 +208,11 @@ bool startOTAUpdate(WiFiClient* client, int contentLength) {
         written += len;
 
         // Calculate and print progress
-        progress = (written * 100) / contentLength;
+        progress = 50 + (written * 50.0 / contentLength); // geschatte progress
         if (progress != lastProgress) {
-          tft.fillRect(300, 120, 200, 200, kleur_zwart);
+          // tft.fillRect(300, 120, 200, 200, kleur_zwart); // use function
           tft.setCursor(350, 125);
-          tft.printf("%d%%\n", progress);
+          draw_update_progress(progress);
           lastProgress = progress;
         }
       }
@@ -245,4 +245,12 @@ bool startOTAUpdate(WiFiClient* client, int contentLength) {
 
   tft.println("Update geslaagd");
   return true;
+}
+void draw_update_progress(int progress) {
+  tft.fillRect(100, 200, TFT_WIDTH-200, 20, kleur_zwart); // clear bar
+  tft.fillRect(100, 200, (TFT_WIDTH-200)*(progress/100.0), 20, tft.color565(0,100,255)); // blue progress
+  tft.setTextColor(kleur_wit);
+  tft.setTextSize(2);
+  tft.setCursor((TFT_WIDTH/2)-15, 200);
+          draw_update_progress(progress);
 }

@@ -105,6 +105,20 @@ void bouw_update() {
   // center_tekst(120, 150, "Tik om terug te gaan", 1, tft.color565(255, 255, 255));
 }
 
+
+String fetchVersion4() {
+  HTTPClient http;
+  http.begin("https://raw.githubusercontent.com/brennyc86/BKOS4/main/firmware/versie4.txt");
+  int httpCode = http.GET();
+  if (httpCode == HTTP_CODE_OK) {
+    String v = http.getString();
+    v.trim();
+    http.end();
+    return v;
+  }
+  http.end();
+  return "latest";
+}
 void run_update() {
   int druk;
   if (actieve_touch) {
@@ -129,6 +143,12 @@ void run_update() {
       tft.print(BKOS_VERSIE);
       tft.print(" > ");
       tft.println(BKOS_VERSIE_GIT);
+      String target4 = fetchVersion4();
+      tft.setCursor(300, 70);
+      tft.setTextSize(2);
+      tft.setTextColor(kleur_beige);
+      tft.print("Updating to BKOS4 ");
+      tft.println(target4);
       downloadAndApplyFirmware(4);
     } else if (druk == 1) {
       // Installeren BKOS 5a
