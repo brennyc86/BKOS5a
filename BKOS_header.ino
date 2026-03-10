@@ -4,14 +4,24 @@ void header_plaatsen(String headertitel) {
 }
 
 void header_plaatsen() {
-  fillRect(header_vlak[0], header_vlak[1], header_vlak[2], header_vlak[3], kleur_zwart);
-  if (RESOLUTIE == 2432) {
-    center_tekst(100, 7, header_titel, 1, tft.color565(255, 255, 255)); 
-  } else if (RESOLUTIE == 3248) {
-    center_tekst(100, 7, header_titel, 2, tft.color565(255, 255, 255)); 
-  } else if (RESOLUTIE == 4880) {
-    center_tekst(100, 7, header_titel, 2, tft.color565(255, 255, 255), false); 
+  fillRect(header_vlak[0], header_vlak[1], header_vlak[2], header_vlak[3], kleur_header_balk);
+  int icon_tekst_grootte = scherm_x(1);
+  if (RESOLUTIE == 4880) {
+    icon_tekst_grootte = 2;
   }
+  // Titel links uitgelijnd, na alert/bell ruimte (30px)
+  tft.setTextColor(kleur_header_tekst);
+  if (RESOLUTIE == 2432) {
+    tft.setTextSize(1);
+    setCursor(30, 8);
+  } else if (RESOLUTIE == 3248) {
+    tft.setTextSize(2);
+    setCursor(30, 7);
+  } else if (RESOLUTIE == 4880) {
+    tft.setTextSize(2);
+    setCursor(30, 7);
+  }
+  tft.print(header_titel);
   klok_update(true);
   header_alert();
 }
@@ -24,21 +34,21 @@ void klok_update(bool force) {
   String huidige_tijd = tijd();
   if ((laatste_tijd != huidige_tijd) || (force)) {
     laatste_tijd = huidige_tijd;
-    fillRect(160, 0, 45, header_vlak[3], kleur_zwart);
+    fillRect(160, 0, 45, header_vlak[3], kleur_header_balk);
     setCursor(190, 7);
 
     int icon_tekst_grootte = scherm_x(1);
     if (RESOLUTIE == 4880){
       icon_tekst_grootte = 2;
-    } 
+    }
 
     checkWiFi();
 
     tft.setTextSize(icon_tekst_grootte);
-    tft.setTextColor(kleur_wit);
+    tft.setTextColor(kleur_header_tekst);
     tft.print(huidige_tijd);
     h_klok_millis = millis();
-    drawIcon10x10(225, 5, icon_instellingen, kleur_wit, icon_tekst_grootte);
+    drawIcon10x10(225, 5, icon_instellingen, kleur_header_tekst, icon_tekst_grootte);
     drawIconWifi10x10(175, 5, icon_tekst_grootte);
     drawIcon10x10(160, 5, icon_sd, sd_connect, icon_tekst_grootte);
     klok_getekend = millis();

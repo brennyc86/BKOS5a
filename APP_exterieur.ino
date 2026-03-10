@@ -14,62 +14,62 @@ void exterieur(String actie) {
 
     uint16_t kl_lucht  = tft.color565(100, 160, 210);
     uint16_t kl_water  = tft.color565(20,  65,  120);
-    uint16_t kl_romp   = tft.color565(30,  80,  40);
-    uint16_t kl_opbouw = tft.color565(235, 235, 235);
-    uint16_t kl_zeil   = tft.color565(155, 60,  35);
-    uint16_t kl_mast   = tft.color565(190, 190, 190);
 
     // Achtergrond: lucht + water
-    int wl = y + 52;  // waterlijn y positie in icon
+    int wl = y + 52;
     fillRect(x+3, y+3, 98, 60, kl_lucht);
     fillRect(x+3, wl,  98, 43, kl_water);
     drawLine(x+3, wl,   x+100, wl,   tft.color565(160, 210, 240));
     drawLine(x+3, wl+1, x+100, wl+1, tft.color565(100, 170, 220));
 
-    // Mini boot (schaals: orig 120x165 -> icon ~70x50)
-    // Mast: van y+8 tot y+50 op x+48
-    int mx = x + 48;
-    drawLine(mx,   y+8,  mx,   wl-2, kl_mast);  // mast
-    drawLine(mx+1, y+8,  mx+1, wl-2, kl_mast);
+    // Mini boot - schaal ~0.55x van origineel (120x165 -> 66x90)
+    // Coordinaten: orig_x*0.55 + x+18, orig_y*0.35 + y+8
+    uint16_t km = tft.color565(185, 185, 185);
+    uint16_t kz = tft.color565(155, 60,  35);
+    uint16_t kr = tft.color565(30,  80,  40);
+    uint16_t ko = tft.color565(235, 235, 235);
+    int bx = x + 18;  // boot offset x
+    int by = y + 8;   // boot offset y
+    // Schaal: sx = bx + int(ox*0.55), sy = by + int(oy*0.35)
+    // Mast (x=65-69 -> ~36, y=0-133)
+    tft.drawLine(bx+36, by+0,  bx+36, by+47, km);
+    tft.drawLine(bx+37, by+0,  bx+37, by+47, km);
     // Verstaging
-    drawLine(mx, y+9,  x+8,  wl-4, kl_mast);   // voor
-    drawLine(mx, y+9,  x+90, wl-2, kl_mast);   // achter
-    // Grootzeil (roodbruin driehoek langs mast)
-    for (int sy = 0; sy < 38; sy++) {
-      int sw = (sy * 12) / 38;
-      tft.drawPixel(mx - sw - 1, y+10+sy, kl_zeil);
-    }
-    // Genua (roodbruin voor de mast)
-    drawLine(mx+1, wl-3, x+85, wl-2, kl_zeil);
-    drawLine(mx+1, wl-3, x+70, y+28, kl_zeil);
-    // Romp vulling (donkergroen)
-    for (int ry = 0; ry < 6; ry++) {
-      drawLine(x+8, wl-5+ry, x+88, wl-2+ry, kl_romp);
-    }
-    // Opbouw (wit blokje op romp)
-    fillRect(x+16, wl-14, 28, 10, kl_opbouw);
-    // Raampjes
-    tft.drawPixel(x+22, wl-10, kl_lucht);
-    tft.drawPixel(x+28, wl-10, kl_lucht);
-    tft.drawPixel(x+34, wl-10, kl_lucht);
+    tft.drawLine(bx+36, by+1, bx+0,  by+52, km);  // voor
+    tft.drawLine(bx+36, by+1, bx+66, by+49, km);  // achter
+    // Giek (y=118-120 -> ~41-42)
+    tft.drawLine(bx+11, by+41, bx+36, by+41, km);
+    // Grootzeil (roodbruin driehoek)
+    tft.drawLine(bx+11, by+41, bx+36, by+1,  kz);
+    // Genua
+    tft.drawLine(bx+36, by+47, bx+64, by+48, kz);
+    tft.drawLine(bx+36, by+47, bx+29, by+45, kz);
+    // Romp
+    tft.drawLine(bx+1,  by+52, bx+55, by+58, kr);
+    tft.drawLine(bx+55, by+58, bx+66, by+49, kr);
+    tft.drawLine(bx+1,  by+52, bx+0,  by+52, kr);
+    // Opbouw (wit blokje)
+    tft.drawLine(bx+0,  by+52, bx+22, by+49, ko);
+    tft.drawLine(bx+22, by+49, bx+22, by+44, ko);
+    tft.drawLine(bx+22, by+44, bx+30, by+44, ko);
+    tft.drawLine(bx+30, by+44, bx+47, by+47, ko);
 
-    // Knoppen onder de boot (2x2 grid, zelfde stijl als echte knoppen)
-    // Haven, Zeilen, Motor, Anker
+    // Knoppen op 1 rij (Haven, Zeilen, Motor, Anker)
     const char* knop_labels[] = {"Hav", "Zei", "Mot", "Ank"};
-    int kx_start = x + 5;
-    int ky_start = y + 66;
-    int kw = 44;   // knop breedte
-    int kh = 14;   // knop hoogte
+    int kx_start = x + 4;
+    int ky = y + 68;
+    int kw = 22;
+    int kh = 14;
+    int kgap = 2;
     for (int k = 0; k < 4; k++) {
-      int kx = kx_start + (k % 2) * (kw + 4);
-      int ky = ky_start + (k / 2) * (kh + 4);
+      int kx = kx_start + k * (kw + kgap);
       uint16_t kb_kleur = (exterieurscherm_status[k] == 1) ?
-        tft.color565(0, 200, 80) : tft.color565(50, 50, 70);
+        tft.color565(0, 180, 70) : tft.color565(40, 40, 60);
       fillRect(kx, ky, kw, kh, kb_kleur);
-      drawRect(kx, ky, kw, kh, tft.color565(100, 100, 120));
+      drawRect(kx, ky, kw, kh, tft.color565(90, 90, 110));
       tft.setTextColor(kleur_wit);
       tft.setTextSize(1);
-      setCursor(kx + 4, ky + 3);
+      setCursor(kx + 2, ky + 3);
       tft.print(knop_labels[k]);
     }
 
@@ -169,52 +169,46 @@ void bouw_exterieur() {
 }
 
 void exterieur_teken_boot(int32_t x, int32_t y) {
-  // Kleuren per onderdeel
   uint16_t kl_romp   = tft.color565(30,  80,  40);   // donkergroen romp
-  uint16_t kl_opbouw = tft.color565(235, 235, 235);  // wit opbouw
+  uint16_t kl_opbouw = tft.color565(235, 235, 235);  // wit opbouw/kajuit
   uint16_t kl_zeil   = tft.color565(155, 60,  35);   // roodbruin zeilen
   uint16_t kl_mast   = tft.color565(185, 185, 185);  // aluminium grijs mast/stagen
   uint16_t kl_ramen  = tft.color565(140, 195, 235);  // lichtblauw ramen
 
-  // ZEILEN (roodbruin) - tekenen als eerste (achterste)
+  // ZEILEN (roodbruin) - eerst tekenen (achterste laag)
   static int boot_zeilen[][2] = {
-    {20, 118}, {20, 118}, {65, 4}, {65, 4},           // grootzeil
-    {117, 137}, {117, 137}, {89, 137}, {89, 137},     // genua deel 1
-    {52, 129}, {52, 129}, {53, 120}, {53, 120}        // genua deel 2
+    {20, 118}, {20, 118}, {65, 4}, {65, 4},                              // grootzeil
+    {117, 137}, {117, 137}, {89, 137}, {89, 137},                        // genua deel 1
+    {52, 129}, {52, 129}, {53, 120}, {53, 120}                           // genua deel 2
   };
   tekenItem(x, y, kl_zeil, boot_zeilen, sizeof(boot_zeilen)/sizeof(int)/2);
 
-  // MAST EN VERSTAGING (grijs)
+  // MAST EN STAGEN (grijs)
   static int boot_mast[][2] = {
-    {0, 150}, {0, 150}, {63, 0}, {71, 0}, {120, 141}, {120, 141},      // verstaging
+    {0, 150}, {0, 150}, {63, 0}, {71, 0}, {120, 141}, {120, 141},        // verstaging
     {20, 120}, {20, 120}, {65, 120}, {65, 119}, {20, 119}, {20, 118}, {65, 118}, {65, 118}, // giek
-    {69, 133}, {69, 133}, {69, 0}, {68, 0}, {68, 133}, {67, 133}, {67, 0}, {66, 0}, {66, 133}, {65, 133}, {65, 0}, {65, 0} // mast
+    {69, 133}, {69, 133}, {69, 0}, {68, 0}, {68, 133}, {67, 133},
+    {67, 0}, {66, 0}, {66, 133}, {65, 133}, {65, 0}, {65, 0}            // mast (5 lijnen)
   };
   tekenItem(x, y, kl_mast, boot_mast, sizeof(boot_mast)/sizeof(int)/2);
 
-  // ROMP (donkergroen) - meerdere lijnen voor vulling
+  // ROMP (donkergroen)
   static int boot_romp[][2] = {
-    {0, 150}, {0, 150}, {2, 165}, {100, 165}, {120, 140}, {120, 140},   // romp onderrand
+    {0, 150}, {0, 150}, {2, 165}, {100, 165}, {120, 140}, {120, 140},    // romp onderrand
     {70, 150}, {70, 150}, {105, 147}, {105, 147},                        // Westerly knikje
-    {40, 140}, {40, 140}, {49, 137}, {49, 146}, {49, 146}, {25, 143}, {25, 143}, {25, 148}, {25, 148} // kuiprand
+    {40, 140}, {40, 140}, {49, 137}, {49, 146}, {49, 146},
+    {25, 143}, {25, 143}, {25, 148}, {25, 148}                           // kuiprand
   };
   tekenItem(x, y, kl_romp, boot_romp, sizeof(boot_romp)/sizeof(int)/2);
-  // Extra romp vulling lijnen
-  for (int ry = 151; ry < 165; ry++) {
-    tft.drawLine(scherm_x(x+2), scherm_y(y+ry), scherm_x(x+100), scherm_y(y+ry), kl_romp);
-  }
   tekenCircels(x, y, kl_romp, circels_boot, sizeof(circels_boot)/sizeof(int)/3);
 
   // OPBOUW (wit)
   static int boot_opbouw[][2] = {
-    {0, 150}, {2, 146}, {40, 140}, {40, 125}, {49, 125}, {54, 133}, {70, 133}, {72, 135}, {85, 135}, {92, 142}, {92, 142}, // opbouw
-    {54, 133}, {54, 133}, {44, 133}, {44, 137}, {44, 137}              // kajuit deur
+    {0, 150}, {2, 146}, {40, 140}, {40, 125}, {49, 125}, {54, 133},
+    {70, 133}, {72, 135}, {85, 135}, {92, 142}, {92, 142},               // opbouw contour
+    {54, 133}, {54, 133}, {44, 133}, {44, 137}, {44, 137}                // kajuit deur/buiskap
   };
   tekenItem(x, y, kl_opbouw, boot_opbouw, sizeof(boot_opbouw)/sizeof(int)/2);
-  // Opbouw vulling
-  for (int oy = 126; oy < 140; oy++) {
-    tft.drawLine(scherm_x(x+2), scherm_y(y+oy), scherm_x(x+40), scherm_y(y+oy), kl_opbouw);
-  }
 
   // RAMEN (lichtblauw)
   static int boot_ramen[][2] = {
@@ -224,8 +218,9 @@ void exterieur_teken_boot(int32_t x, int32_t y) {
   };
   tekenItem(x, y, kl_ramen, boot_ramen, sizeof(boot_ramen)/sizeof(int)/2);
 
-  // Roepnaam tekst
-  tekenTeksten(x, y, tft.color565(200, 200, 200), teken_tekst_positie_boot, teken_tekst_boot, sizeof(teken_tekst_positie_boot)/sizeof(int)/3);
+  // Roepnaam
+  tekenTeksten(x, y, tft.color565(200, 200, 200), teken_tekst_positie_boot, teken_tekst_boot,
+               sizeof(teken_tekst_positie_boot)/sizeof(int)/3);
 }
 
 void exterieur_symbolen_verlichting(int32_t x, int32_t y){

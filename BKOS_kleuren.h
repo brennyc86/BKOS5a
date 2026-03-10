@@ -19,3 +19,7 @@ uint16_t kleur_passief_groen = tft.color565(0, 150, 0);
 
 uint16_t kleur_home_knop = kleur_donker;
 uint16_t kleur_home_tekst = kleur_licht;
+
+// [BKOS5a] Header kleuren - aanpasbaar
+uint16_t kleur_header_balk  = tft.color565(0, 60, 30);    // donkergroen header balk
+uint16_t kleur_header_tekst = tft.color565(255, 255, 255); // witte header tekst
