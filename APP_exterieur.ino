@@ -49,7 +49,26 @@ void exterieur(String actie) {
 void bouw_exterieur() {
 
   // header_plaatsen("Schakelscherm");
-  achtergrond(kleur_licht);
+  // Marine achtergrond (nacht/zee sfeer)
+  uint16_t kleur_marine = tft.color565(5, 25, 65);
+  achtergrond(kleur_marine);
+  // Homeknop kleur aanpassen voor donkere achtergrond
+  kleur_home_knop = tft.color565(255, 255, 255);
+  kleur_home_tekst = kleur_marine;
+
+  // Zee horizon lijn
+  drawLine(0, scherm_y(160), scherm_x(240), scherm_y(160), tft.color565(10, 60, 120));
+  drawLine(0, scherm_y(161), scherm_x(240), scherm_y(161), tft.color565(15, 80, 150));
+
+  // Header balk met titel
+  fillRect(0, scherm_y(22), scherm_x(240), scherm_y(18), tft.color565(0, 15, 50));
+  tft.setTextColor(tft.color565(100, 180, 255));
+  tft.setTextSize(2);
+  setCursor(10, 24);
+  tft.print("EXTERIEUR VERLICHTING");
+  tft.setTextSize(1.5);
+  tft.setTextColor(kleur_donker);
+
 
   aantal_knoppen = exterieur_knoppen_cnt;
   
