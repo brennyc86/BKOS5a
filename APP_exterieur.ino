@@ -12,22 +12,34 @@ void exterieur(String actie) {
   } else if (actie == "icon_groot") {
     int x = getCursorX();
     int y = getCursorY();
-    fillRect(x+3, y+3, 98, 95, kleur_zwart);      // Vlak waarbinnen een (groot) icon getekent mag worden 
-    drawLine(x+20, y+14, x+20, y+80, kleur_wit);
-    drawLine(x+20, y+47, x+25, y+19, kleur_wit);
-    drawLine(x+20, y+14, x+60, y+14, kleur_wit);
-    drawLine(x+25, y+19, x+65, y+19, kleur_wit);
-    drawLine(x+20, y+14, x+25, y+19, kleur_wit);
-    drawLine(x+60, y+14, x+65, y+19, kleur_wit);
-    drawLine(x+20, y+80, x+60, y+80, kleur_wit);
-    drawLine(x+60, y+80, x+60, y+47, kleur_wit);
-    drawLine(x+60, y+47, x+65, y+19, kleur_wit);
-    drawLine(x+20, y+47, x+60, y+47, tft.color565(100, 100, 100));
-    drawLine(x+42, y+42, x+45, y+25, kleur_wit);
-    setCursor(x+35, y+53);
-    tft.setTextSize(2);
-    tft.setTextColor(kleur_wit);
-    tft.print(0);
+    // Achtergrond: donkerblauw (nacht sfeer)
+    fillRect(x+3, y+3, 98, 95, tft.color565(0, 10, 40));
+
+    // Mast (wit, verticaal midden boven)
+    drawLine(x+49, y+6, x+49, y+28, kleur_wit);
+    // Dwarsra op de mast
+    drawLine(x+39, y+14, x+59, y+14, kleur_wit);
+
+    // Toplicht (geel) bovenop mast
+    fillCircle(x+49, y+5, 4, tft.color565(255, 240, 100));
+
+    // Bakboord helft boot (GROEN, links)
+    drawIcon(x+4, y+26, 30, tft.color565(0, 200, 60), icon_30_HL_bb, sizeof(icon_30_HL_bb));
+    // Stuurboord helft boot (ROOD, rechts)
+    drawIcon(x+62, y+26, 30, tft.color565(220, 0, 0), icon_30_HL_sb, sizeof(icon_30_HL_sb));
+
+    // Heklicht (wit, achter stuurboord)
+    fillCircle(x+87, y+56, 3, kleur_wit);
+
+    // Labels BB (groen) en SB (rood)
+    tft.setTextSize(1);
+    tft.setTextColor(tft.color565(0, 200, 60));
+    setCursor(x+10, y+88);
+    tft.print("BB");
+    tft.setTextColor(tft.color565(220, 0, 0));
+    setCursor(x+68, y+88);
+    tft.print("SB");
+
     tft.setTextColor(kleur_donker);
     tft.setTextSize(1.5);
     setCursor(x+5, y+105);
