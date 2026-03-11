@@ -254,3 +254,7 @@ void draw_update_progress(int progress) {
   tft.setCursor((TFT_WIDTH/2)-15, 200);
           draw_update_progress(progress);
 }
+\n// BKOS6 OTA source added by GitHub sync
+ota_git[1].url = "https://raw.githubusercontent.com/brennyc86/BKOS6/master/build/esp32.esp32.esp32s3/BKOS6.ino.bin";
+ota_git[1].versie = "5a.T260310";
+ota_git[1].update = true;
