@@ -123,7 +123,7 @@ void bouw_exterieur() {
 
   // --- HEADER BALK ---
   kleur_header_balk = tft.color565(0,100,200); // blauw
-  drawHeader(0, 0, TFT_WIDTH, 30, kleur_header_balk, kleur_header_tekst, true); // inclusief klok/symbolen, voor title
+  header_plaatsen(); // inclusief klok/symbolen, voor title
   // --- KNOPPEN SETUP ---
   aantal_knoppen = exterieur_knoppen_cnt;
 
