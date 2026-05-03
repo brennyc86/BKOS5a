@@ -1,3 +1,11 @@
+
+// 0 : Raspberry pi pico (2) + ESP8266 s01
+// 1 : Raspberry pi pico (2)W
+// 2 : ESP32-2432s028r (CYD, Cheap Yellow Display), kies "ESP32 WROOM DA Module"
+// 3 : ESP32 VROOM     (38 pin versie) 
+// 4 : ESP32-8048S043C_I  (4,3 inch versie van de CYD), Kies "ESP32S3 Dev Module" als MCU
+// 5 : ESP32-8048S070C_I  (7,0 inch versie van de CYD), Kies "ESP32S3 Dev Module" als MCU
+
 #if HARDWARE == 2
     void ts_begin(){
       digitalWrite(TS_CS, HIGH);
@@ -47,10 +55,15 @@
 
 #if TS_DRIVER == 3
   bool ts_touched() {
+    ts_begin();
+    delay(10);
     // ts.read();
     if (ts.isTouched) {
+      scherm_touched = millis();
+      actieve_touch = true;
       return true;
     }
+    actieve_touch = false;
     return false;
   }
 
@@ -118,11 +131,16 @@
   #endif
 #else
   bool ts_touched(){
+    ts_begin():
+    delay(10);
     if (ts.tirqTouched()) {
       if (ts.touched()) {
+        scherm_touched = millis();
+        actieve_touch = true;
         return true;
       }
     }
+    actieve_touch = false;
     return false;
   }
 
