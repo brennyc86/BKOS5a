@@ -26,7 +26,7 @@ void bouw_update() {
   delete[]knoppen_tekst;
   delete[]knoppen_tekst_kleur;
   
-  aantal_knoppen = 2;
+  aantal_knoppen = 3;
   knoppen_positie = new int*[aantal_knoppen];
   knoppen_teken_positie = new int*[aantal_knoppen];
   knoppen_tekst = new char*[aantal_knoppen];
@@ -61,6 +61,10 @@ void bouw_update() {
       knoppen_tekst[i] = "BKOS 4";      
     } else if (i == 1) {
       knoppen_tekst[i] = "BKOS 5";      
+      } else if (i == 2) {
+        knoppen_tekst[i] = "BKOS verwijderen";
+      } else if (i == 2) {
+        knoppen_tekst[i] = "BKOS verwijderen";
     } else {
       knoppen_tekst[i] = allowed_versions[i - 2];
     }
@@ -151,6 +155,38 @@ void run_update() {
       tft.println(target4);
       downloadAndApplyFirmware(4);
     } else if (druk == 1) {
+    } else if (druk == 2) {
+      // Installeren BKOS blanco
+      updaten = true;
+      delay(250);
+      tft.fillScreen(kleur_zwart);
+      bkos_logo(10, 10, kleur_donker);
+      tft.setCursor(300, 10);
+      tft.setTextSize(3);
+      tft.setTextColor(kleur_groen);
+      tft.println("BKOS update");
+      tft.setTextColor(kleur_beige);
+      tft.setCursor(300, 45);
+      tft.print(BKOS_VERSIE);
+      tft.print(" > ");
+      tft.println("BKOS blanco");
+      downloadAndApplyFirmware(6);
+    } else if (druk == 2) {
+      // Installeren BKOS blanco
+      updaten = true;
+      delay(250);
+      tft.fillScreen(kleur_zwart);
+      bkos_logo(10, 10, kleur_donker);
+      tft.setCursor(300, 10);
+      tft.setTextSize(3);
+      tft.setTextColor(kleur_groen);
+      tft.println("BKOS update");
+      tft.setTextColor(kleur_beige);
+      tft.setCursor(300, 45);
+      tft.print(BKOS_VERSIE);
+      tft.print(" > ");
+      tft.println("BKOS blanco");
+      downloadAndApplyFirmware(6);
       // Installeren BKOS 5a
       updaten = true;
       delay(250);

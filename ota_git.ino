@@ -26,7 +26,6 @@ void ota_git_update() {
     tft.print(" > ");
     tft.println(BKOS_VERSIE_GIT);
     downloadAndApplyFirmware();
-  } else {
     // tft.setTextColor(kleur_actief_groen);
     // tft.println("BKOS4 versie is actueel:");
     // tft.setTextSize(3);
@@ -34,7 +33,6 @@ void ota_git_update() {
     // tft.setTextSize(1);
     // tft.setTextColor(kleur_wit);
     // delay(3000);
-  }
 }
 
 // void loop() {
@@ -49,14 +47,12 @@ bool checkForFirmwareUpdate() {
   if (WiFi.status() != WL_CONNECTED) {
     // tft.println("WiFi not connected");
     return false;
-  }
 
   // Step 1: Fetch the latest version from GitHub
   BKOS_VERSIE_GIT = fetchLatestVersion();
   BKOS_GIT_ALLOWED = fetchAlowedVersions();
   if (BKOS_VERSIE_GIT == "") {
     return false;
-  }
 
   // Step 2: Compare versions
   // if (BKOS_VERSIE_GIT != BKOS_VERSIE) {
@@ -69,22 +65,16 @@ bool checkForFirmwareUpdate() {
       tft.print(BKOS_VERSIE_GIT);
       return true;
     }
-  }
   if (not str_BKOS_VERSIE.indexOf(BKOS_GIT_ALLOWED) > 0) {
     return true;
-  }
   return false;
 }
 
 String fetchAlowedVersions() {
-  HTTPClient http;
   if (strncmp(BKOS_VERSIE, "4", 1) == 0) {
     http.begin(aversionUrl);
-  } else if (strncmp(BKOS_VERSIE, "5", 1) == 0) {
     http.begin(aversion5Url);
-  } else {
     http.begin(aversionUrl);
-  }
 
   int httpCode = http.GET();
   if (httpCode == HTTP_CODE_OK) {
@@ -92,22 +82,16 @@ String fetchAlowedVersions() {
     latestVersion.trim();  // Remove any extra whitespace
     http.end();
     return latestVersion;
-  } else {
     tft.printf("Failed to fetch version. HTTP code: %d\n", httpCode);
     http.end();
     return "";
-  }
 }
 
 String fetchLatestVersion() {
-  HTTPClient http;
   if (strncmp(BKOS_VERSIE, "4", 1) == 0) {
     http.begin(versionUrl);
-  } else if (strncmp(BKOS_VERSIE, "5", 1) == 0) {
     http.begin(version5Url);
-  } else {
     http.begin(versionUrl);
-  }
 
   int httpCode = http.GET();
   if (httpCode == HTTP_CODE_OK) {
@@ -115,15 +99,12 @@ String fetchLatestVersion() {
     latestVersion.trim();  // Remove any extra whitespace
     http.end();
     return latestVersion;
-  } else {
     tft.printf("Failed to fetch version. HTTP code: %d\n", httpCode);
     http.end();
     return "";
-  }
 }
 
 String fetchVersion5() {
-  HTTPClient http;
   http.begin(version5Url);
   int httpCode = http.GET();
   if (httpCode == HTTP_CODE_OK) {
@@ -131,7 +112,6 @@ String fetchVersion5() {
     v.trim();
     http.end();
     return v;
-  }
   http.end();
   return "";
 }
@@ -139,11 +119,8 @@ String fetchVersion5() {
 void downloadAndApplyFirmware() {
   if (strncmp(BKOS_VERSIE, "4", 1) == 0) {
     downloadAndApplyFirmware(4);
-  } else if (strncmp(BKOS_VERSIE, "5", 1) == 0) {
     downloadAndApplyFirmware(5);
-  } else {
     downloadAndApplyFirmware(4);
-  }
 }
 
 void downloadAndApplyFirmware(byte BKOS) {
@@ -151,9 +128,12 @@ void downloadAndApplyFirmware(byte BKOS) {
   http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
   if (BKOS == 5) {
     http.begin(firmware5Url);
+  } else if (BKOS == 6) {
+    http.begin(firmwareBlancoUrl);
   } else {
-    http.begin(firmwareUrl);  // BKOS 4 of standaard
+    http.begin(firmwareUrl);
   }
+    http.begin(firmwareBlancoUrl);
 
   int httpCode = http.GET();
   // tft.printf("HTTP GET code: %d\n", httpCode);
@@ -174,9 +154,30 @@ void downloadAndApplyFirmware(byte BKOS) {
     } else {
       tft.println("Invalid firmware size");
     }
-  } else {
     tft.printf("Failed to fetch firmware. HTTP code: %d\n", httpCode);
-  }
+  http.end();
+
+
+  int httpCode = http.GET();
+  // tft.printf("HTTP GET code: %d\n", httpCode);
+
+  if (httpCode == HTTP_CODE_OK) {
+    int contentLength = http.getSize();
+    // tft.printf("Firmware size: %d bytes\n", contentLength);
+
+    if (contentLength > 0) {
+      WiFiClient* stream = http.getStreamPtr();
+      if (startOTAUpdate(stream, contentLength)) {
+        tft.println("OTA update successful, restarting...");
+        delay(2000);
+        ESP.restart();
+      } else {
+        tft.println("OTA update failed");
+      }
+    } else {
+      tft.println("Invalid firmware size");
+    }
+    tft.printf("Failed to fetch firmware. HTTP code: %d\n", httpCode);
   http.end();
 }
 
@@ -186,7 +187,6 @@ bool startOTAUpdate(WiFiClient* client, int contentLength) {
   if (!Update.begin(contentLength)) {
     tft.printf("Update begin failed: %s\n", Update.errorString());
     return false;
-  }
 
   // tft.println("Writing firmware...");
   size_t written = 0;
@@ -225,7 +225,6 @@ bool startOTAUpdate(WiFiClient* client, int contentLength) {
     }
 
     yield();
-  }
   tft.setTextColor(kleur_wit);
   tft.setTextSize(2);
   tft.print('\n');
@@ -236,12 +235,10 @@ bool startOTAUpdate(WiFiClient* client, int contentLength) {
     tft.printf("Error: Write incomplete. Expected %d but got %d bytes\n", contentLength, written);
     Update.abort();
     return false;
-  }
 
   if (!Update.end()) {
     tft.printf("Error: Update end failed: %s\n", Update.errorString());
     return false;
-  }
 
   tft.println("Update geslaagd");
   return true;

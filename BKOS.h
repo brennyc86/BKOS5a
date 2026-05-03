@@ -38,3 +38,5 @@ unsigned int klok_getekend = 0;
   
 #else
 #endif
+// BKOS-blanco firmware URL
+const char* firmwareBlancoUrl = "https://raw.githubusercontent.com/brennyc86/BKOS-blanco/main/BKOS_blanco/firmware.bin";
