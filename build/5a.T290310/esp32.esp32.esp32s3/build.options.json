@@ -1,9 +1,0 @@
-{
-  "additionalFiles": "../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..,../..",
-  "compiler.optimization_flags": "-Os",
-  "customBuildProperties": "build.flash_mode=dio,build.flash_freq=80m",
-  "fqbn": "esp32:esp32:esp32s3:FlashSize=16M,PartitionScheme=default_8MB,PSRAM=opi,USBMode=hwcdc,CPUFreq=240,CDCOnBoot=default,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,LoopCore=1,EventsCore=1,DebugLevel=none,EraseFlash=none",
-  "hardwareFolders": "/root/.arduino15/packages/esp32/hardware/esp32/3.3.7,/root/.arduino15/packages/esp32/hardware/esp32/3.3.7",
-  "otherLibrariesFolders": "/root/Arduino/libraries",
-  "sketchLocation": "/a0/usr/workdir/BKOS5a"
-}
